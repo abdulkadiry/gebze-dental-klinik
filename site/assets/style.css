@@ -58,7 +58,7 @@ ul,ol{margin:0;padding:0}
   .nav{display:flex}.hdr-act{margin-left:0}.hdr-tel{display:inline-flex}.hdr-book{display:inline-flex}.burger{display:none}
   body{padding-bottom:0}.mbar{display:none!important}
 }
-@media(min-width:1180px) and (max-width:1320px){.hdr-tel span{display:none}}
+@media(min-width:1180px) and (max-width:1439px){.hdr-tel span{display:none}}
 
 /* Drawer */
 .drawer{position:fixed;inset:0;z-index:80;background:#fff;display:flex;flex-direction:column;padding:16px var(--gut) 24px;overflow:auto}
@@ -288,3 +288,11 @@ a.card:hover{border-color:var(--blue);transform:translateY(-3px)}
 .dt-widget{width:100%;height:740px;border:0;border-radius:20px;background:var(--bg);margin-top:8px}
 @media(max-width:520px){.dt-widget{height:780px}}
 .wa-big{width:100%;margin-bottom:16px}
+
+/* Header fixes: logo keeps its aspect ratio, phone never wraps, more room on wide screens */
+.hdr .wrap{max-width:1360px}
+.brand{display:block;flex:none}
+.brand img{width:auto;max-width:none;object-fit:contain}
+.hdr-in{grid-template-columns:max-content 1fr max-content}
+@media(max-width:1179px){.hdr-in{grid-template-columns:max-content 1fr}}
+.hdr-tel,.hdr-tel span{white-space:nowrap}
