@@ -11,6 +11,8 @@ export const CFG = {
   whatsapp: '905413603680',
   email: 'info@gebzedentalklinik.com',
   address: T('Hacıhalil, 1227. Sk. No: 3B, 41400 Gebze/Kocaeli', 'Hacıhalil, 1227. Sk. No: 3B, 41400 Gebze/Kocaeli, Türkiye'),
+  bookingUrl: 'https://www.doktortakvimi.com/esra-bozdemir/dis-hekimi/kocaeli',
+  bookingWidget: 'https://www.doktortakvimi.com/ajax/marketing/doctor/widget/big_with_calendar/esra-bozdemir/null?customUtm=null&id=kxp2oe85oo&header=null&content=null&fullwidth=null&hide_branding=true&widget_position=bottom&opinion=false&saasonly=false&expand_calendar=false',
   mapsUrl: 'https://maps.app.goo.gl/yyZbtAmvwYGVumuG9',
   mapQuery: 'Hacıhalil, 1227. Sk. No: 3B, 41400 Gebze/Kocaeli',
   hours: {
