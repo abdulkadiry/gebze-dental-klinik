@@ -1,7 +1,7 @@
 // All editable site content lives here. Each text is {tr, en}.
 export const T = (tr, en) => ({ tr, en });
 
-// ⚠ PLACEHOLDERS: replace phone, WhatsApp, email, address, hours and domain with the real details.
+// ⚠ PLACEHOLDERS: replace phone, WhatsApp, address, hours and domain with the real details.
 export const CFG = {
   name: 'Gebze Dental Klinik',
   doctor: 'Dt. Esra Bozdemir Yazıcı',
@@ -9,7 +9,6 @@ export const CFG = {
   phone: '+90 541 360 36 80',
   phoneRaw: '+905413603680',
   whatsapp: '905413603680',
-  email: 'info@gebzedentalklinik.com',
   address: T('Hacıhalil, 1227. Sk. No: 3B, 41400 Gebze/Kocaeli', 'Hacıhalil, 1227. Sk. No: 3B, 41400 Gebze/Kocaeli, Türkiye'),
   bookingUrl: 'https://www.doktortakvimi.com/esra-bozdemir/dis-hekimi/kocaeli',
   bookingWidget: 'https://www.doktortakvimi.com/ajax/marketing/doctor/widget/big_with_calendar/esra-bozdemir/null?customUtm=null&id=kxp2oe85oo&header=null&content=null&fullwidth=null&hide_branding=true&widget_position=bottom&opinion=false&saasonly=false&expand_calendar=false',

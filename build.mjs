@@ -16,7 +16,7 @@ const BOOK = () => CFG.bookingUrl + '#highlight-calendar';
 
 const U = {
   nav: { treatments: T('Tedaviler', 'Treatments'), tech: T('Teknoloji', 'Technology'), team: T('Ekibimiz', 'Our Team'), patients: T('Yeni Hastalar', 'New Patients'), blog: T('Blog', 'Blog'), contact: T('İletişim', 'Contact') },
-  book: T('Randevu Al', 'Book Appointment'), call: T('Ara', 'Call'), callNow: T('Hemen Ara', 'Call Now'), wa: T('WhatsApp', 'WhatsApp'),
+  book: T('Randevu Al', 'Book Appointment'), dir: T('Yol Tarifi', 'Directions'), call: T('Ara', 'Call'), callNow: T('Hemen Ara', 'Call Now'), wa: T('WhatsApp', 'WhatsApp'),
   menu: T('Menü', 'Menu'), close: T('Kapat', 'Close'), more: T('Detaylı bilgi', 'Learn more'), skip: T('İçeriğe geç', 'Skip to content'),
 };
 const ICON = {
@@ -68,7 +68,7 @@ function layout({ l, alt, title, desc, body, ld = [], cls = '' }) {
   const other = l === 'tr' ? 'en' : 'tr';
   const full = `${title} | ${CFG.name}`;
   const dentist = {
-    '@context': 'https://schema.org', '@type': 'Dentist', name: CFG.name, url: CFG.siteUrl + `/${l}/`, telephone: CFG.phone, email: CFG.email,
+    '@context': 'https://schema.org', '@type': 'Dentist', name: CFG.name, url: CFG.siteUrl + `/${l}/`, telephone: CFG.phone,
     image: CFG.siteUrl + '/assets/logo-stacked.png', hasMap: CFG.mapsUrl, address: { '@type': 'PostalAddress', streetAddress: 'Hacıhalil, 1227. Sk. No: 3B', postalCode: '41400', addressLocality: 'Gebze', addressRegion: 'Kocaeli', addressCountry: 'TR' },
     employee: TEAM.doctors.map((p) => ({ '@type': 'Person', name: p.name, jobTitle: 'Dentist' })),
   };
@@ -100,22 +100,22 @@ ${[dentist, ...ld].map((o) => `<script type="application/ld+json">${JSON.stringi
   <div class="hdr-act">
     <a class="hdr-tel" href="${tel}">${ic('phone')}<span>${CFG.phone}</span></a>
     <a class="lang" href="${alt[other]}" hreflang="${other}" lang="${other}" aria-label="${other === 'tr' ? 'Türkçe' : 'English'}">${ic('globe')}${other.toUpperCase()}</a>
-    <a class="btn btn-primary hdr-book" href="${BOOK(l)}" target="_blank" rel="noopener">${tr(U.book, l)}</a>
+    <a class="btn btn-primary hdr-book" href="${BOOK(l)}" target="_blank" rel="noopener">${ic('calendar')}${tr(U.book, l)}</a>
     <button class="burger" id="burger" aria-label="${tr(U.menu, l)}" aria-expanded="false" aria-controls="drawer">${ic('menu')}</button>
   </div>
 </div></header>
 <div class="drawer" id="drawer" hidden>
   <div class="drawer-top"><a class="brand" href="/${l}/"><img src="/assets/logo-horizontal.png" alt="${CFG.name}" width="150" height="73"></a><button class="burger" id="drawer-close" aria-label="${tr(U.close, l)}">${ic('x')}</button></div>
   <nav class="drawer-nav">${nav}</nav>
-  <div class="drawer-act"><a class="btn btn-primary" href="${BOOK(l)}" target="_blank" rel="noopener">${ic('calendar')}${tr(U.book, l)}</a><a class="btn btn-outline" href="${tel}">${ic('phone')}${CFG.phone}</a><a class="btn btn-outline" href="${alt[other]}">${ic('globe')}${other === 'tr' ? 'Türkçe' : 'English'}</a></div>
+  <div class="drawer-act"><a class="btn btn-primary" href="${BOOK(l)}" target="_blank" rel="noopener">${ic('calendar')}${tr(U.book, l)}</a><a class="btn btn-outline" href="${CFG.mapsUrl}" target="_blank" rel="noopener">${ic('pin')}${tr(U.dir, l)}</a><a class="btn btn-outline" href="${alt[other]}">${ic('globe')}${other === 'tr' ? 'Türkçe' : 'English'}</a></div>
 </div>
 <main id="main">
 ${body}
 </main>
 ${footer(l)}
+<a class="wa-fab" href="${wa}" target="_blank" rel="noopener" aria-label="WhatsApp">${ic('wa')}</a>
 <div class="mbar" aria-label="Quick actions">
-  <a href="${tel}">${ic('phone')}${tr(U.call, l)}</a>
-  <a href="${wa}" target="_blank" rel="noopener">${ic('wa')}${tr(U.wa, l)}</a>
+  <a href="${CFG.mapsUrl}" target="_blank" rel="noopener">${ic('pin')}${tr(U.dir, l)}</a>
   <a class="mbar-book" href="${BOOK(l)}" target="_blank" rel="noopener">${ic('calendar')}${tr(U.book, l)}</a>
 </div>
 <script src="/assets/app.js" defer></script>
@@ -135,7 +135,7 @@ function footer(l) {
     <div class="ftr-brand">
       <img class="ftr-logo" src="/assets/logo-stacked.png" alt="${CFG.name}" width="150" height="141">
       <div>
-        <ul class="plain"><li>${ic('pin')}<a href="${CFG.mapsUrl}" target="_blank" rel="noopener">${tr(CFG.address, l)}</a></li><li>${ic('phone')}<a href="${tel}">${CFG.phone}</a></li><li>${ic('wa')}<a href="${wa}" target="_blank" rel="noopener">WhatsApp</a></li><li>${ic('mail')}<a href="mailto:${CFG.email}">${CFG.email}</a></li></ul>
+        <ul class="plain"><li>${ic('pin')}<a href="${CFG.mapsUrl}" target="_blank" rel="noopener">${tr(CFG.address, l)}</a></li><li>${ic('phone')}<a href="${tel}">${CFG.phone}</a></li><li>${ic('wa')}<a href="${wa}" target="_blank" rel="noopener">WhatsApp</a></li></ul>
       </div>
     </div>
     <div><h3>${tr(labels.hrs, l)}</h3><ul class="hours">${hours}</ul></div>
@@ -151,7 +151,7 @@ const pageHero = (l, eyebrow, h1, lead) => `<section class="phero"><div class="w
 const sectionHead = (eyebrow, h2, lead) => `<div class="shead"><p class="eyebrow">${eyebrow}</p><h2>${h2}</h2>${lead ? `<p class="lead">${lead}</p>` : ''}</div>`;
 const ctaBand = (l) => `<section class="sec"><div class="wrap"><div class="cta-band reveal">
   <div><h2>${tr(T('Muayeneniz ücretsiz: randevunuzu planlayalım', 'Your check-up is free: let’s plan your visit'), l)}</h2><p>${tr(T('Formu doldurun ya da bizi arayın; size en uygun saati birlikte belirleyelim.', 'Send us a request or call, and we will find the best time together.'), l)}</p></div>
-  <div class="cta-act"><a class="btn btn-green" href="${BOOK(l)}" target="_blank" rel="noopener">${ic('calendar')}${tr(U.book, l)}</a><a class="btn btn-ghost" href="${tel}">${ic('phone')}${CFG.phone}</a></div></div></div></section>`;
+  <div class="cta-act"><a class="btn btn-green" href="${BOOK(l)}" target="_blank" rel="noopener">${ic('calendar')}${tr(U.book, l)}</a></div></div></div></section>`;
 const faqList = (items, l) => `<div class="faq">${items.map((f) => `<details><summary>${tr(f.q, l)}${ic('arrow', 'chev')}</summary><p>${tr(f.a, l)}</p></details>`).join('')}</div>`;
 const faqLd = (items, l) => ({ '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: items.map((f) => ({ '@type': 'Question', name: tr(f.q, l), acceptedAnswer: { '@type': 'Answer', text: tr(f.a, l) } })) });
 const treatCard = (t, l) => `<a class="card tcard" href="${tUrl(l, t)}"><span class="ico">${ic(t.icon)}</span><h3>${tr(t.name, l)}</h3><p>${tr(t.promise, l)}</p><span class="more">${tr(U.more, l)}${ic('arrow')}</span></a>`;
@@ -189,7 +189,7 @@ add(function home(l) {
     <h1>${tr(lab.h1, l)}</h1>
     <p class="lead">${tr(lab.sub, l)}</p>
     <p class="free">${ic('check')}${tr(T('Muayene ücretsiz', 'Free check-up'), l)}</p>
-    <div class="btn-row"><a class="btn btn-primary btn-lg" href="${BOOK(l)}" target="_blank" rel="noopener">${ic('calendar')}${tr(T('Ücretsiz Muayene Randevusu', 'Book a Free Check-up'), l)}</a><a class="btn btn-outline btn-lg" href="${tel}">${ic('phone')}${tr(U.callNow, l)}</a></div>
+    <div class="btn-row"><a class="btn btn-primary btn-lg" href="${BOOK(l)}" target="_blank" rel="noopener">${ic('calendar')}${tr(T('Randevu Al', 'Book Appointment'), l)}</a><a class="btn btn-outline btn-lg" href="${CFG.mapsUrl}" target="_blank" rel="noopener">${ic('pin')}${tr(U.dir, l)}</a></div>
   </div>
   <div class="hero-art"><div class="hero-card"><img src="/assets/icon.png" alt="" width="346" height="469"></div>
     <span class="float f1">${ic('aligner')}${tr(lab.chipA, l)}</span><span class="float f2">${ic('crosshair')}${tr(lab.chipB, l)}</span></div>
@@ -240,7 +240,7 @@ add(function home(l) {
       <h2>${tr(T('Ücretsiz muayene için randevu alın', 'Book your free check-up'), l)}</h2>
       <ul class="plain on-blue"><li>${ic('pin')}<a href="${CFG.mapsUrl}" target="_blank" rel="noopener">${tr(CFG.address, l)}</a></li><li>${ic('phone')}<a href="${tel}">${CFG.phone}</a></li></ul>
       ${hoursBlock(l)}
-      <div class="btn-row"><a class="btn btn-green btn-lg" href="${BOOK(l)}" target="_blank" rel="noopener">${ic('calendar')}${tr(T('Ücretsiz Muayene İçin Randevu', 'Book Your Free Check-up'), l)}</a><a class="btn btn-ghost btn-lg" href="${wa}" target="_blank" rel="noopener">${ic('wa')}WhatsApp</a><a class="btn btn-ghost btn-lg" href="${CFG.mapsUrl}" target="_blank" rel="noopener">${ic('pin')}${tr(T('Yol Tarifi', 'Directions'), l)}</a></div>
+      <div class="btn-row"><a class="btn btn-green btn-lg" href="${BOOK(l)}" target="_blank" rel="noopener">${ic('calendar')}${tr(T('Randevu Al', 'Book Appointment'), l)}</a><a class="btn btn-ghost btn-lg" href="${CFG.mapsUrl}" target="_blank" rel="noopener">${ic('pin')}${tr(T('Yol Tarifi', 'Directions'), l)}</a></div>
     </div>
     ${mapEmbed()}
   </div>
@@ -265,7 +265,7 @@ for (const t of TREATMENTS) {
     const related = tByGroup(t.group).filter((x) => x !== t).slice(0, 3);
     const body = `<section class="phero"><div class="wrap"><nav class="crumbs" aria-label="Breadcrumb"><a href="${url(l, 'treatments')}">${tr(U.nav.treatments, l)}</a> / <a href="${url(l, 'treatments')}#${g.id}">${tr(g.name, l)}</a></nav>
   <span class="ico big">${ic(t.icon)}</span><h1>${tr(t.name, l)}</h1><p class="lead">${tr(t.promise, l)}</p>
-  <div class="btn-row"><a class="btn btn-primary btn-lg" href="${BOOK(l)}" target="_blank" rel="noopener">${ic('calendar')}${tr(U.book, l)}</a><a class="btn btn-outline btn-lg" href="${tel}">${ic('phone')}${tr(U.callNow, l)}</a></div></div></section>
+  <div class="btn-row"><a class="btn btn-primary btn-lg" href="${BOOK(l)}" target="_blank" rel="noopener">${ic('calendar')}${tr(U.book, l)}</a></div></div></section>
 <section class="sec"><div class="wrap narrow">
   ${t.slug.en === 'clear-aligners' ? `<div class="art-wrap">${alignerImg(l)}</div>` : ''}${t.slug.en === 'guided-implant-surgery' ? `<div class="art-wrap">${guideImg(l)}</div>` : ''}
   <div class="info-grid"><div class="card info"><h3>${tr(T('Kimler için', 'Who it is for'), l)}</h3><p>${tr(t.who, l)}</p></div><div class="card info"><h3>${tr(T('Süre', 'Duration'), l)}</h3><p>${tr(t.duration, l)}</p></div></div>
@@ -368,9 +368,9 @@ add((l) => {
     <p class="note">${tr(T('Takvim açılmıyorsa', 'If the calendar does not load,'), l)} <a href="${CFG.bookingUrl}" target="_blank" rel="noopener">${tr(T('buradan randevu alabilirsiniz', 'book here'), l)}</a>. ${tr(T('Randevu takvimi DoktorTakvimi hizmeti ile sunulur.', 'The booking calendar is provided by DoktorTakvimi.'), l)}</p>
   </div>
   <aside class="contact-side">
-    <div class="card info"><ul class="plain"><li>${ic('pin')}<a href="${CFG.mapsUrl}" target="_blank" rel="noopener">${tr(CFG.address, l)}</a></li><li>${ic('phone')}<a href="${tel}">${CFG.phone}</a></li><li>${ic('wa')}<a href="${wa}" target="_blank" rel="noopener">WhatsApp</a></li><li>${ic('mail')}<a href="mailto:${CFG.email}">${CFG.email}</a></li></ul><h3>${tr(T('Çalışma saatleri', 'Opening hours'), l)}</h3>${hoursBlock(l)}</div>
-    <a class="btn btn-green btn-lg wa-big" href="${wa}" target="_blank" rel="noopener">${ic('wa')}${tr(T('WhatsApp ile iletişime geçin', 'Contact us on WhatsApp'), l)}</a>
-    <div class="card info emerg">${ic('alert')}<div><h3>${tr(T('Acil durum', 'Emergency'), l)}</h3><p>${tr(T('Şiddetli ağrı, şişlik veya kırık diş için hemen arayın.', 'For severe pain, swelling or a broken tooth, call right away.'), l)}</p><a class="btn btn-primary" href="${tel}">${ic('phone')}${CFG.phone}</a></div></div>
+    <div class="card info"><ul class="plain"><li>${ic('pin')}<a href="${CFG.mapsUrl}" target="_blank" rel="noopener">${tr(CFG.address, l)}</a></li><li>${ic('phone')}<a href="${tel}">${CFG.phone}</a></li><li>${ic('wa')}<a href="${wa}" target="_blank" rel="noopener">WhatsApp</a></li></ul><h3>${tr(T('Çalışma saatleri', 'Opening hours'), l)}</h3>${hoursBlock(l)}</div>
+    <a class="btn btn-outline btn-lg wa-big" href="${CFG.mapsUrl}" target="_blank" rel="noopener">${ic('pin')}${tr(U.dir, l)}</a>
+    <div class="card info emerg">${ic('alert')}<div><h3>${tr(T('Acil durum', 'Emergency'), l)}</h3><p>${tr(T('Şiddetli ağrı, şişlik veya kırık diş için hemen arayın.', 'For severe pain, swelling or a broken tooth, call right away.'), l)}</p><a class="tel-link" href="${tel}">${CFG.phone}</a></div></div>
     ${mapEmbed()}
   </aside>
 </div></section>`;
@@ -380,8 +380,8 @@ add((l) => {
 // Privacy
 add((l) => {
   const paras = l === 'tr'
-    ? ['Bu metin, randevu formu ve iletişim kanalları üzerinden paylaştığınız kişisel verilerin işlenmesine ilişkin genel bir aydınlatmadır.', 'Veri sorumlusu: Gebze Dental Klinik. Paylaştığınız ad, telefon ve randevu bilgileri yalnızca randevu oluşturmak ve sizinle iletişim kurmak amacıyla işlenir; üçüncü kişilerle paylaşılmaz.', 'KVKK kapsamında verilerinize erişme, düzeltme ve silinmesini isteme haklarınız vardır. Talepleriniz için ' + CFG.email + ' adresine yazabilirsiniz.', 'Bu web sitesi çerez veya izleme aracı kullanmaz. Online randevu takvimi DoktorTakvimi tarafından sunulur; takvimde girdiğiniz bilgiler o hizmetin gizlilik politikasına tabidir. Harita ve yazı tipi Google hizmetlerinden yüklenir.']
-    : ['This notice explains how personal data you share through the appointment form and our contact channels is processed.', 'Data controller: Gebze Dental Klinik. The name, phone and appointment details you share are used only to arrange your appointment and contact you, and are not shared with third parties.', 'Under Turkey’s KVKK you may request access to, correction of or deletion of your data. Write to ' + CFG.email + '.', 'This website does not use cookies or tracking tools. The online booking calendar is provided by DoktorTakvimi; details you enter there are subject to that service’s privacy policy. The map and fonts are loaded from Google services.'];
+    ? ['Bu metin, randevu formu ve iletişim kanalları üzerinden paylaştığınız kişisel verilerin işlenmesine ilişkin genel bir aydınlatmadır.', 'Veri sorumlusu: Gebze Dental Klinik. Paylaştığınız ad, telefon ve randevu bilgileri yalnızca randevu oluşturmak ve sizinle iletişim kurmak amacıyla işlenir; üçüncü kişilerle paylaşılmaz.', 'KVKK kapsamında verilerinize erişme, düzeltme ve silinmesini isteme haklarınız vardır. Talepleriniz için WhatsApp veya telefon ile bize ulaşabilirsiniz.', 'Bu web sitesi çerez veya izleme aracı kullanmaz. Online randevu takvimi DoktorTakvimi tarafından sunulur; takvimde girdiğiniz bilgiler o hizmetin gizlilik politikasına tabidir. Harita ve yazı tipi Google hizmetlerinden yüklenir.']
+    : ['This notice explains how personal data you share through the appointment form and our contact channels is processed.', 'Data controller: Gebze Dental Klinik. The name, phone and appointment details you share are used only to arrange your appointment and contact you, and are not shared with third parties.', 'Under Turkey’s KVKK you may request access to, correction of or deletion of your data. Contact us via WhatsApp or phone.', 'This website does not use cookies or tracking tools. The online booking calendar is provided by DoktorTakvimi; details you enter there are subject to that service’s privacy policy. The map and fonts are loaded from Google services.'];
   const body = `${pageHero(l, '', tr(T('Gizlilik ve KVKK Aydınlatma Metni', 'Privacy & KVKK Notice'), l))}<section class="sec"><div class="wrap narrow"><article class="prose">${paras.map((x) => `<p>${x}</p>`).join('')}</article></div></section>`;
   return { alt: both('privacy'), title: tr(T('Gizlilik ve KVKK', 'Privacy & KVKK'), l), desc: tr(T('Kişisel verilerin işlenmesine ilişkin aydınlatma metni.', 'Notice on the processing of personal data.'), l), body, path: url(l, 'privacy') };
 });

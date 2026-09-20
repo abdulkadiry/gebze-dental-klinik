@@ -36,31 +36,4 @@
     }, { threshold: .12 });
     items.forEach(function (n) { io.observe(n); });
   } else items.forEach(function (n) { n.classList.add('in'); });
-
-  // booking form -> WhatsApp / e-mail
-  var form = $('#randevu');
-  if (form) {
-    var lang = form.dataset.lang;
-    var L = lang === 'tr'
-      ? { n: 'Ad Soyad', p: 'Telefon', t: 'Tedavi', z: 'Tercih edilen zaman', m: 'Mesaj', subj: 'Randevu talebi', hello: 'Merhaba, randevu almak istiyorum.', err: 'Lütfen ad, telefon ve onay kutusunu doldurun.', ok: 'Mesaj hazırlandı; gönderimi uygulamada tamamlayın.' }
-      : { n: 'Full name', p: 'Phone', t: 'Treatment', z: 'Preferred time', m: 'Message', subj: 'Appointment request', hello: 'Hello, I would like to book an appointment.', err: 'Please fill in your name, phone and the consent box.', ok: 'Message prepared; finish sending in the app.' };
-    var channel = 'wa';
-    form.querySelectorAll('button[type=submit]').forEach(function (b) { b.addEventListener('click', function () { channel = b.dataset.channel; }); });
-    form.addEventListener('submit', function (e) {
-      e.preventDefault();
-      var f = form.elements, bad = false;
-      ['name', 'phone'].forEach(function (k) { var v = f[k].value.trim(); f[k].classList.toggle('invalid', !v); if (!v) bad = true; });
-      if (!f.consent.checked) bad = true;
-      var st = $('[data-status]', form);
-      if (bad) { st.textContent = L.err; return; }
-      var lines = [L.hello, L.n + ': ' + f.name.value.trim(), L.p + ': ' + f.phone.value.trim()];
-      if (f.treatment.value) lines.push(L.t + ': ' + f.treatment.value);
-      lines.push(L.z + ': ' + f.time.value);
-      if (f.message.value.trim()) lines.push(L.m + ': ' + f.message.value.trim());
-      var text = lines.join('\n');
-      st.textContent = L.ok;
-      if (channel === 'wa') window.open('https://wa.me/' + form.dataset.wa + '?text=' + encodeURIComponent(text), '_blank', 'noopener');
-      else location.href = 'mailto:' + form.dataset.mail + '?subject=' + encodeURIComponent(L.subj) + '&body=' + encodeURIComponent(text);
-    });
-  }
 })();

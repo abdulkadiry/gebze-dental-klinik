@@ -296,3 +296,24 @@ a.card:hover{border-color:var(--blue);transform:translateY(-3px)}
 .hdr-in{grid-template-columns:max-content 1fr max-content}
 @media(max-width:1179px){.hdr-in{grid-template-columns:max-content 1fr}}
 .hdr-tel,.hdr-tel span{white-space:nowrap}
+
+/* Floating WhatsApp + trimmed contact actions */
+.wa-fab{position:fixed;right:18px;bottom:18px;z-index:70;width:60px;height:60px;border-radius:50%;background:var(--green);color:var(--navy);display:grid;place-items:center;border:3px solid #fff;text-decoration:none!important;transition:background .2s,transform .2s}
+.wa-fab:hover{background:#96dc47;transform:scale(1.06)}
+.wa-fab .ic{width:30px;height:30px}
+@media(max-width:1179px){.wa-fab{bottom:92px;right:14px}}
+.mbar{grid-template-columns:1fr 1.3fr}
+.tel-link{display:inline-block;margin-top:8px;font-weight:600;font-size:1.05rem;color:var(--blue-dark)}
+@media(prefers-reduced-motion:reduce){.wa-fab:hover{transform:none}}
+
+/* Randevu Al + Yol Tarifi always side by side */
+.hero .btn-row,.visit .btn-row{flex-wrap:nowrap}
+.hero .btn-row .btn,.visit .btn-row .btn{flex:0 1 auto;min-width:0}
+@media(max-width:480px){
+  .hero .btn-row,.visit .btn-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .hero .btn-row .btn,.visit .btn-row .btn{width:100%;padding:0 10px;font-size:.92rem;gap:8px}
+}
+@media(max-width:480px){
+  .hero .btn-row .btn,.visit .btn-row .btn{white-space:nowrap;font-size:.86rem;padding:0 8px;gap:6px}
+  .hero .btn-row .btn .ic,.visit .btn-row .btn .ic{width:18px;height:18px}
+}
