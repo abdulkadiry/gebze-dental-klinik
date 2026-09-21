@@ -328,3 +328,9 @@ a.card:hover{border-color:var(--blue);transform:translateY(-3px)}
 .fig-pair{display:grid;gap:14px;margin:1.4rem 0}
 .fig-pair .case-fig{margin:0}
 @media(min-width:640px){.fig-pair{grid-template-columns:1fr 1fr}}
+
+/* Where the fixed bottom bar is visible, the home page's own Randevu/Yol Tarifi buttons would duplicate it */
+@media(max-width:1179px){
+  .hero .btn-row,.visit .btn-row{display:none}
+  .hero .free{margin-bottom:0}
+}
