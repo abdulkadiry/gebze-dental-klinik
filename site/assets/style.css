@@ -317,3 +317,14 @@ a.card:hover{border-color:var(--blue);transform:translateY(-3px)}
   .hero .btn-row .btn,.visit .btn-row .btn{white-space:nowrap;font-size:.86rem;padding:0 8px;gap:6px}
   .hero .btn-row .btn .ic,.visit .btn-row .btn .ic{width:18px;height:18px}
 }
+
+/* Case study / blog figures */
+.bcover{width:100%;height:auto;aspect-ratio:4/3;object-fit:cover;border-radius:18px;margin-bottom:16px;background:var(--blue-soft)}
+.prose h2{font-size:clamp(1.3rem,2.6vw,1.7rem);margin:2.2rem 0 .8rem}
+.case-fig{margin:1.4rem 0}
+.case-fig img{width:100%;height:auto;border-radius:20px;background:var(--bg)}
+.case-fig figcaption{font-size:.85rem;color:var(--muted);margin-top:8px;text-align:center}
+.narrow-fig{max-width:440px;margin-inline:auto}
+.fig-pair{display:grid;gap:14px;margin:1.4rem 0}
+.fig-pair .case-fig{margin:0}
+@media(min-width:640px){.fig-pair{grid-template-columns:1fr 1fr}}

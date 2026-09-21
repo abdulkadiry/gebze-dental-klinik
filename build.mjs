@@ -155,7 +155,15 @@ const ctaBand = (l) => `<section class="sec"><div class="wrap"><div class="cta-b
 const faqList = (items, l) => `<div class="faq">${items.map((f) => `<details><summary>${tr(f.q, l)}${ic('arrow', 'chev')}</summary><p>${tr(f.a, l)}</p></details>`).join('')}</div>`;
 const faqLd = (items, l) => ({ '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: items.map((f) => ({ '@type': 'Question', name: tr(f.q, l), acceptedAnswer: { '@type': 'Answer', text: tr(f.a, l) } })) });
 const treatCard = (t, l) => `<a class="card tcard" href="${tUrl(l, t)}"><span class="ico">${ic(t.icon)}</span><h3>${tr(t.name, l)}</h3><p>${tr(t.promise, l)}</p><span class="more">${tr(U.more, l)}${ic('arrow')}</span></a>`;
-const blogCard = (p, l) => `<a class="card bcard" href="${pUrl(l, p)}"><span class="chip">${tr(p.cat, l)}</span><h3>${tr(p.title, l)}</h3><p>${tr(p.excerpt, l)}</p><span class="meta">${fmtDate(p.date, l)}</span></a>`;
+const figHtml = (f, l) => `<figure class="case-fig${f.narrow ? ' narrow-fig' : ''}"><img src="/assets/img/vaka/${f.img}.jpg" alt="${esc(f.alt[l])}" loading="lazy"><figcaption>${f.cap[l]}</figcaption></figure>`;
+const renderBody = (items, l) => items.map((x) => {
+  if (typeof x === 'string') return `<p>${x}</p>`;
+  if (x.h) return `<h2>${x.h}</h2>`;
+  if (x.pair) return `<div class="fig-pair">${x.pair.map((f) => figHtml(f, l)).join('')}</div>`;
+  if (x.img) return figHtml(x, l);
+  return '';
+}).join('');
+const blogCard = (p, l) => `<a class="card bcard" href="${pUrl(l, p)}">${p.cover ? `<img class="bcover" src="/assets/img/vaka/${p.cover}" alt="" width="800" height="600" loading="lazy">` : ''}<span class="chip">${tr(p.cat, l)}</span><h3>${tr(p.title, l)}</h3><p>${tr(p.excerpt, l)}</p><span class="meta">${fmtDate(p.date, l)}</span></a>`;
 const mapEmbed = () => `<iframe class="map" title="Map" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps?q=${encodeURIComponent(CFG.mapQuery)}&output=embed"></iframe>`;
 const hoursBlock = (l) => `<ul class="hours">${CFG.hours[l].map(([d, h]) => `<li><span>${d}</span><span>${h}</span></li>`).join('')}</ul>`;
 
@@ -341,11 +349,11 @@ add((l) => {
 for (const p of POSTS) {
   add((l) => {
     const more = POSTS.filter((x) => x !== p).slice(0, 3);
-    const body = `<section class="phero"><div class="wrap narrow"><nav class="crumbs"><a href="${url(l, 'blog')}">${tr(U.nav.blog, l)}</a> / ${tr(p.cat, l)}</nav><h1>${tr(p.title, l)}</h1><p class="meta">${fmtDate(p.date, l)} · ${CFG.name}</p></div></section>
-<section class="sec"><div class="wrap narrow"><article class="prose">${p.body[l].map((x) => `<p>${x}</p>`).join('')}</article>
+    const body = `<section class="phero"><div class="wrap narrow"><nav class="crumbs"><a href="${url(l, 'blog')}">${tr(U.nav.blog, l)}</a> / ${tr(p.cat, l)}</nav><h1>${tr(p.title, l)}</h1><p class="meta">${fmtDate(p.date, l)} · ${p.author || CFG.name}</p></div></section>
+<section class="sec"><div class="wrap narrow"><article class="prose">${renderBody(p.body[l], l)}</article>
 <div class="cta-inline"><p>${tr(T('Sorularınız için bizimle iletişime geçin.', 'Have questions? Get in touch.'), l)}</p><a class="btn btn-primary" href="${BOOK(l)}" target="_blank" rel="noopener">${ic('calendar')}${tr(U.book, l)}</a></div></div></section>
 <section class="sec alt"><div class="wrap"><h2 class="center">${tr(T('Diğer yazılar', 'More articles'), l)}</h2><div class="grid g3">${more.map((x) => blogCard(x, l)).join('')}</div></div></section>`;
-    const ld = { '@context': 'https://schema.org', '@type': 'BlogPosting', headline: tr(p.title, l), datePublished: p.date, author: { '@type': 'Organization', name: CFG.name }, inLanguage: l };
+    const ld = { '@context': 'https://schema.org', '@type': 'BlogPosting', headline: tr(p.title, l), datePublished: p.date, author: p.author ? { '@type': 'Person', name: p.author } : { '@type': 'Organization', name: CFG.name }, inLanguage: l };
     return { alt: both('blog', p.slug), title: tr(p.title, l), desc: tr(p.excerpt, l), body, ld: [ld], path: pUrl(l, p) };
   });
 }
