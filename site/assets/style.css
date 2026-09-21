@@ -334,3 +334,4 @@ a.card:hover{border-color:var(--blue);transform:translateY(-3px)}
   .hero .btn-row,.visit .btn-row{display:none}
   .hero .free{margin-bottom:0}
 }
+.nav a{font-size:.88rem;padding:8px 2px}

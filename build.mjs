@@ -7,7 +7,7 @@ import { T, CFG, TEAM, GROUPS, TREATMENTS, FAQ, POSTS } from './src/data.mjs';
 const OUT = path.join(path.dirname(fileURLToPath(import.meta.url)), 'site');
 const LANGS = ['tr', 'en'];
 const S = {
-  treatments: T('tedaviler', 'treatments'), tech: T('teknoloji', 'technology'), team: T('ekibimiz', 'our-team'),
+  treatments: T('tedaviler', 'treatments'), tech: T('teknoloji', 'technology'), team: T('doktorlarimiz', 'our-doctors'),
   patients: T('yeni-hastalar', 'new-patients'), blog: T('blog', 'blog'), contact: T('iletisim', 'contact'), privacy: T('gizlilik-kvkk', 'privacy'),
 };
 const url = (l, key, sub) => `/${l}/${key ? S[key][l] + '/' : ''}${sub ? sub[l] + '/' : ''}`;
@@ -15,7 +15,7 @@ const both = (key, sub) => ({ tr: url('tr', key, sub), en: url('en', key, sub) }
 const BOOK = () => CFG.bookingUrl + '#highlight-calendar';
 
 const U = {
-  nav: { treatments: T('Tedaviler', 'Treatments'), tech: T('Teknoloji', 'Technology'), team: T('Ekibimiz', 'Our Team'), patients: T('Yeni Hastalar', 'New Patients'), blog: T('Blog', 'Blog'), contact: T('İletişim', 'Contact') },
+  nav: { treatments: T('Tedaviler', 'Treatments'), tech: T('Teknoloji', 'Technology'), team: T('Doktorlarımız', 'Our Doctors'), patients: T('Yeni Hastalar', 'New Patients'), blog: T('Blog', 'Blog'), contact: T('İletişim', 'Contact') },
   book: T('Randevu Al', 'Book Appointment'), dir: T('Yol Tarifi', 'Directions'), call: T('Ara', 'Call'), callNow: T('Hemen Ara', 'Call Now'), wa: T('WhatsApp', 'WhatsApp'),
   menu: T('Menü', 'Menu'), close: T('Kapat', 'Close'), more: T('Detaylı bilgi', 'Learn more'), skip: T('İçeriğe geç', 'Skip to content'),
 };
@@ -312,16 +312,12 @@ ${ctaBand(l)}`;
 const initials = (n) => n.replace(/^Dt\.\s*/, '').split(/\s+/).map((w) => w[0]).slice(0, 2).join('');
 const person = (p, l) => `<article class="card person reveal"><div class="doc-photo ${p.photo ? '' : 'ph'}">${p.photo ? `<img class="portrait" src="${p.photo}" width="667" height="832" loading="lazy" alt="${p.name}">` : `<span class="avatar" aria-hidden="true">${initials(p.name)}</span>`}</div><h3>${p.name}</h3><p class="role">${tr(p.role, l)}</p>${p.bio ? `<p>${tr(p.bio, l)}</p>` : ''}</article>`;
 add((l) => {
-  const body = `${pageHero(l, tr(U.nav.team, l), tr(T('Ekibimiz', 'Meet our team'), l), tr(T('Hekimlerimiz ve asistanlarımız her aşamada yanınızda.', 'Our dentists and assistants are with you at every step.'), l))}
+  const body = `${pageHero(l, tr(U.nav.team, l), tr(T('Doktorlarımız', 'Meet our doctors'), l), tr(T('Hekimlerimiz tedavinizin her aşamasında yanınızda.', 'Our dentists are with you at every step of your treatment.'), l))}
 <section class="sec"><div class="wrap">
-  <h2>${tr(T('Hekimler', 'Dentists'), l)}</h2>
   <div class="team-grid">${TEAM.doctors.map((p) => person(p, l)).join('')}</div>
 </div></section>
-<section class="sec alt"><div class="wrap">
-  <h2>${tr(T('Asistanlar', 'Assistants'), l)}</h2>
-  <div class="team-grid">${TEAM.assistants.map((p) => person(p, l)).join('')}</div>
-</div></section>${ctaBand(l)}`;
-  return { alt: both('team'), title: tr(T('Ekibimiz: Hekimler ve Asistanlar', 'Our Team: Dentists & Assistants'), l), desc: tr(T('Gebze Dental Klinik hekimleri ve asistanları.', 'The dentists and assistants at Gebze Dental Klinik.'), l), body, path: url(l, 'team') };
+${ctaBand(l)}`;
+  return { alt: both('team'), title: tr(T('Doktorlarımız', 'Our Doctors'), l), desc: tr(T('Gebze Dental Klinik diş hekimleri.', 'The dentists at Gebze Dental Klinik.'), l), body, path: url(l, 'team') };
 });
 
 // New patients
@@ -406,6 +402,11 @@ for (const l of LANGS) {
     fs.writeFileSync(path.join(dir, 'index.html'), layout({ l, ...p }));
     urls.push({ loc: p.path, alt: p.alt });
   }
+}
+// old URLs kept alive as redirects
+for (const [from, to] of [['/tr/ekibimiz/', '/tr/doktorlarimiz/'], ['/en/our-team/', '/en/our-doctors/']]) {
+  fs.mkdirSync(path.join(OUT, from), { recursive: true });
+  fs.writeFileSync(path.join(OUT, from, 'index.html'), `<!doctype html><html><head><meta charset="utf-8"><title>Redirecting</title><link rel="canonical" href="${CFG.siteUrl}${to}"><meta http-equiv="refresh" content="0;url=${to}"><meta name="robots" content="noindex"></head><body><a href="${to}">${to}</a></body></html>`);
 }
 fs.writeFileSync(path.join(OUT, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n${urls.map((u) => `<url><loc>${CFG.siteUrl}${u.loc}</loc><xhtml:link rel="alternate" hreflang="tr" href="${CFG.siteUrl}${u.alt.tr}"/><xhtml:link rel="alternate" hreflang="en" href="${CFG.siteUrl}${u.alt.en}"/></url>`).join('\n')}\n</urlset>\n`);
 fs.writeFileSync(path.join(OUT, 'robots.txt'), `User-agent: *\nAllow: /\nSitemap: ${CFG.siteUrl}/sitemap.xml\n`);
