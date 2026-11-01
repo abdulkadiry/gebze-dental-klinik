@@ -6,6 +6,18 @@ import { T, CFG, TEAM, GROUPS, TREATMENTS, FAQ, POSTS } from './src/data.mjs';
 
 const OUT = path.join(path.dirname(fileURLToPath(import.meta.url)), 'site');
 const LANGS = ['tr', 'en'];
+const GTM_ID = 'GTM-NN5QSFM7';
+const GTM_HEAD = `<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','${GTM_ID}');</script>
+<!-- End Google Tag Manager -->`;
+const GTM_BODY = `<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=${GTM_ID}"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->`;
 const S = {
   treatments: T('tedaviler', 'treatments'), tech: T('teknoloji', 'technology'), team: T('doktorlarimiz', 'our-doctors'),
   patients: T('yeni-hastalar', 'new-patients'), blog: T('blog', 'blog'), contact: T('iletisim', 'contact'), privacy: T('gizlilik-kvkk', 'privacy'),
@@ -86,6 +98,7 @@ function layout({ l, alt, title, desc, body, ld = [], cls = '' }) {
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
+${GTM_HEAD}
 <title>${esc(full)}</title>
 <meta name="description" content="${esc(desc)}">
 <link rel="canonical" href="${CFG.siteUrl}${alt[l]}">
@@ -101,6 +114,7 @@ function layout({ l, alt, title, desc, body, ld = [], cls = '' }) {
 ${[dentist, ...ld].map((o) => `<script type="application/ld+json">${JSON.stringify(o)}</script>`).join('\n')}
 </head>
 <body class="${cls}">
+${GTM_BODY}
 <a class="skip" href="#main">${tr(U.skip, l)}</a>
 <header class="hdr" id="hdr"><div class="wrap hdr-in">
   <a class="brand" href="/${l}/" aria-label="${CFG.name}"><img src="/assets/logo-horizontal.png" alt="${CFG.name}" width="180" height="88"></a>
@@ -426,7 +440,7 @@ for (const [from, to] of [['/tr/ekibimiz/', '/tr/doktorlarimiz/'], ['/en/our-tea
 }
 fs.writeFileSync(path.join(OUT, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n${urls.map((u) => `<url><loc>${CFG.siteUrl}${u.loc}</loc><xhtml:link rel="alternate" hreflang="tr" href="${CFG.siteUrl}${u.alt.tr}"/><xhtml:link rel="alternate" hreflang="en" href="${CFG.siteUrl}${u.alt.en}"/></url>`).join('\n')}\n</urlset>\n`);
 fs.writeFileSync(path.join(OUT, 'robots.txt'), `User-agent: *\nAllow: /\nSitemap: ${CFG.siteUrl}/sitemap.xml\n`);
-fs.writeFileSync(path.join(OUT, 'index.html'), `<!doctype html><html lang="tr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${CFG.name}</title><link rel="icon" href="/assets/icon.png"><link rel="alternate" hreflang="tr" href="/tr/"><link rel="alternate" hreflang="en" href="/en/"><meta http-equiv="refresh" content="0;url=/tr/"><script>var l=(navigator.language||'tr').toLowerCase().indexOf('tr')===0?'tr':'en';location.replace('/'+l+'/');</script></head><body style="font-family:sans-serif;text-align:center;padding:4rem"><p><a href="/tr/">Türkçe</a> · <a href="/en/">English</a></p></body></html>`);
-fs.writeFileSync(path.join(OUT, '404.html'), `<!doctype html><html lang="tr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>404 | ${CFG.name}</title><link rel="stylesheet" href="/assets/style.css"></head><body><main class="phero"><div class="wrap center"><h1>404</h1><p class="lead">Sayfa bulunamadı · Page not found</p><p><a class="btn btn-primary" href="/tr/">Ana sayfa</a> <a class="btn btn-outline" href="/en/">Home</a></p></div></main></body></html>`);
+fs.writeFileSync(path.join(OUT, 'index.html'), `<!doctype html><html lang="tr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">${GTM_HEAD}<title>${CFG.name}</title><link rel="icon" href="/assets/icon.png"><link rel="alternate" hreflang="tr" href="/tr/"><link rel="alternate" hreflang="en" href="/en/"><meta http-equiv="refresh" content="0;url=/tr/"><script>var l=(navigator.language||'tr').toLowerCase().indexOf('tr')===0?'tr':'en';location.replace('/'+l+'/');</script></head><body style="font-family:sans-serif;text-align:center;padding:4rem">${GTM_BODY}<p><a href="/tr/">Türkçe</a> · <a href="/en/">English</a></p></body></html>`);
+fs.writeFileSync(path.join(OUT, '404.html'), `<!doctype html><html lang="tr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">${GTM_HEAD}<title>404 | ${CFG.name}</title><link rel="stylesheet" href="/assets/style.css"></head><body>${GTM_BODY}<main class="phero"><div class="wrap center"><h1>404</h1><p class="lead">Sayfa bulunamadı · Page not found</p><p><a class="btn btn-primary" href="/tr/">Ana sayfa</a> <a class="btn btn-outline" href="/en/">Home</a></p></div></main></body></html>`);
 console.log(`Built ${urls.length} pages.`);
 
