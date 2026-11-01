@@ -53,6 +53,14 @@ const alignerImg = (l) => `<img class="art photo" src="/assets/img/seffaf-plak-8
 const guideImg = (l) => `<img class="art photo" src="/assets/img/cerrahi-guide-800.jpg" width="800" height="600" loading="lazy" alt="${l === 'tr' ? 'Cerrahi guide ve implant planlama yazılımı görüntüsü' : 'Surgical guide and implant planning software view'}">`;
 const guideArt = `<svg class="art" viewBox="0 0 320 200" role="img" aria-label="Surgical guide illustration"><rect width="320" height="200" rx="28" fill="var(--green-soft)"/><rect x="30" y="132" width="260" height="46" rx="22" fill="var(--green)" fill-opacity=".55"/><rect x="60" y="76" width="50" height="70" rx="18" fill="#fff" stroke="var(--navy)" stroke-width="2"/><rect x="210" y="76" width="50" height="70" rx="18" fill="#fff" stroke="var(--navy)" stroke-width="2"/><rect x="150" y="100" width="20" height="56" rx="7" fill="var(--blue)"/><path d="M152 112h16M152 124h16M152 136h16M152 148h16" stroke="#fff" stroke-width="2"/><rect x="50" y="42" width="220" height="30" rx="15" fill="var(--blue)" fill-opacity=".25" stroke="var(--blue)" stroke-width="2"/><rect x="146" y="26" width="28" height="48" rx="9" fill="var(--navy)"/><path d="M160 74v22" stroke="var(--green-dark)" stroke-width="3" stroke-dasharray="4 5" stroke-linecap="round"/><path d="M150 12h20" stroke="var(--navy)" stroke-width="3" stroke-linecap="round"/></svg>`;
 
+const KL = {
+  waiting: { f: 'bekleme-800', t: T('Bekleme alanı', 'Waiting area'), d: T('Gün ışığı alan bekleme alanı.', 'A waiting area with plenty of daylight.'), alt: T('Gebze Dental Klinik bekleme alanı: sarı koltuk, bitkiler ve mermer zemin', 'Waiting area of Gebze Dental Klinik with a yellow sofa, plants and marble floor') },
+  waiting2: { f: 'bekleme-2-800', t: T('Bekleme alanı', 'Waiting area'), d: T('Kapıdan girince sizi bu alan karşılıyor.', 'This is the first thing you see when you walk in.'), alt: T('Gebze Dental Klinik bekleme alanı: krem rengi koltuklar ve orkideler', 'Waiting area of Gebze Dental Klinik with cream armchairs and orchids') },
+  room: { f: 'muayene-800', t: T('Muayene odası', 'Treatment room'), d: T('Muayene ve tedaviler burada yapılır. Ölçüler dijital tarayıcıyla alınır.', 'Examinations and treatments take place here. Impressions are taken with a digital scanner.'), alt: T('Muayene odası: diş ünitesi ve monitör', 'Treatment room with a dental unit and monitor') },
+  xray: { f: 'rontgen-800', t: T('Röntgen odası', 'X-ray room'), d: T('Panoramik röntgen klinik içinde çekilir.', 'Panoramic X-rays are taken on site.'), alt: T('Panoramik röntgen cihazı ve bilgisayar', 'Panoramic X-ray unit and computer') },
+  prep: { f: 'hazirlik-800', t: T('Hazırlık alanı', 'Preparation area'), d: T('Tedavi malzemeleri bu alanda hazırlanır.', 'Treatment materials are prepared in this area.'), alt: T('Hazırlık ve çalışma tezgâhı', 'Preparation and work counter') },
+};
+const klCard = (k, l, cap = 'full') => `<figure class="clinic-card reveal"><img src="/assets/img/klinik/${k.f}.jpg" alt="${esc(tr(k.alt, l))}" width="800" height="600" loading="lazy"><figcaption><strong>${tr(k.t, l)}</strong>${cap === 'full' ? `<span>${tr(k.d, l)}</span>` : ''}</figcaption></figure>`;
 const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;');
 const tel = `tel:${CFG.phoneRaw}`;
 const wa = `https://wa.me/${CFG.whatsapp}`;
@@ -84,7 +92,7 @@ function layout({ l, alt, title, desc, body, ld = [], cls = '' }) {
 <link rel="alternate" hreflang="tr" href="${CFG.siteUrl}${alt.tr}">
 <link rel="alternate" hreflang="en" href="${CFG.siteUrl}${alt.en}">
 <link rel="alternate" hreflang="x-default" href="${CFG.siteUrl}${alt.tr}">
-<meta property="og:title" content="${esc(full)}"><meta property="og:description" content="${esc(desc)}"><meta property="og:type" content="website"><meta property="og:image" content="${CFG.siteUrl}/assets/logo-stacked.png">
+<meta property="og:title" content="${esc(full)}"><meta property="og:description" content="${esc(desc)}"><meta property="og:type" content="website"><meta property="og:image" content="${CFG.siteUrl}/assets/img/klinik/og-klinik.jpg">
 <meta name="theme-color" content="#3A72C4">
 <link rel="icon" type="image/png" href="/assets/icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -150,7 +158,7 @@ function footer(l) {
 const pageHero = (l, eyebrow, h1, lead) => `<section class="phero"><div class="wrap"><p class="eyebrow">${eyebrow}</p><h1>${h1}</h1>${lead ? `<p class="lead">${lead}</p>` : ''}</div></section>`;
 const sectionHead = (eyebrow, h2, lead) => `<div class="shead"><p class="eyebrow">${eyebrow}</p><h2>${h2}</h2>${lead ? `<p class="lead">${lead}</p>` : ''}</div>`;
 const ctaBand = (l) => `<section class="sec"><div class="wrap"><div class="cta-band reveal">
-  <div><h2>${tr(T('Muayeneniz ücretsiz: randevunuzu planlayalım', 'Your check-up is free: let’s plan your visit'), l)}</h2><p>${tr(T('Formu doldurun ya da bizi arayın; size en uygun saati birlikte belirleyelim.', 'Send us a request or call, and we will find the best time together.'), l)}</p></div>
+  <div><h2>${tr(T('Muayeneniz ücretsiz, randevunuzu alalım', 'Your check-up is free, let’s book it'), l)}</h2><p>${tr(T('Size uygun gün ve saati seçin, gerisini biz hallederiz.', 'Pick a day and time that suits you and we will take care of the rest.'), l)}</p></div>
   <div class="cta-act"><a class="btn btn-green" href="${BOOK(l)}" target="_blank" rel="noopener">${ic('calendar')}${tr(U.book, l)}</a></div></div></div></section>`;
 const faqList = (items, l) => `<div class="faq">${items.map((f) => `<details><summary>${tr(f.q, l)}${ic('arrow', 'chev')}</summary><p>${tr(f.a, l)}</p></details>`).join('')}</div>`;
 const faqLd = (items, l) => ({ '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: items.map((f) => ({ '@type': 'Question', name: tr(f.q, l), acceptedAnswer: { '@type': 'Answer', text: tr(f.a, l) } })) });
@@ -175,20 +183,19 @@ const add = (p) => pages.push(p);
 add(function home(l) {
   const lab = {
     h1: T('Gülüşünüz için modern, dijital diş hekimliği', 'Modern, digital dentistry for your smile'),
-    sub: T('Gebze’de modern ve dijital planlı tüm diş tedavileri tek klinikte: şeffaf plak, cerrahi guide ile implant ve dijital gülüş tasarımı.', 'Modern, digitally planned dental care under one roof in Gebze: clear aligners, guided implant surgery and digital smile design.'),
-    chipA: T('Şeffaf Plak', 'Clear Aligners'), chipB: T('Cerrahi Guide', 'Surgical Guide'),
+    sub: T('Gebze’de tek klinikte tüm diş tedavileri: dolgu, kanal, implant, şeffaf plak, çocuk tedavisi ve daha fazlası.', 'All dental treatments in one clinic in Gebze: fillings, root canals, implants, clear aligners, children’s care and more.'),
   };
   const trust = [
-    ['tooth', T('Tüm tedaviler', 'All treatments'), T('Tek klinikte, tek plan', 'One clinic, one plan')],
-    ['aligner', T('Şeffaf plak', 'Clear aligners'), T('Dijital planlı, telsiz', 'Digitally planned, wire-free')],
-    ['crosshair', T('Cerrahi guide', 'Surgical guide'), T('Kılavuzlu implant', 'Guided implants')],
-    ['check', T('Ücretsiz muayene', 'Free check-up'), T('Randevunuzu hemen alın', 'Book your visit today')],
+    ['tooth', T('Tüm tedaviler', 'All treatments'), T('Dolgudan implanta, tek klinikte', 'Fillings to implants, in one clinic')],
+    ['cube', T('Dijital teknoloji', 'Digital technology'), T('Dijital tarayıcı ve planlama yazılımı', 'Digital scanner and planning software')],
+    ['shield', T('Şeffaf bilgilendirme', 'Clear information'), T('Plan ve ödeme hekiminiz tarafından anlatılır', 'Your dentist explains the plan and payment')],
+    ['check', T('Ücretsiz muayene', 'Free check-up'), T('Randevuyu hemen alabilirsiniz', 'You can book right away')],
   ];
   const pillars = [
-    ['tooth', T('Tüm tedaviler tek çatı altında', 'All treatments under one roof'), T('Dolgudan implanta, çocuk tedavisinden estetiğe kadar ihtiyacınız olan her şey aynı yerde.', 'From fillings to implants, children’s care to cosmetics, everything you need in one place.')],
-    ['cube', T('Dijital planlama', 'Digital planning'), T('Tedaviyi başlamadan önce ekranda planlar, size sonucu önceden gösteririz.', 'We plan on screen before treatment starts and show you the result in advance.')],
-    ['shield', T('Şeffaf plan', 'A transparent plan'), T('Ne yapılacağını, ne kadar süreceğini ve maliyetini yazılı olarak paylaşırız.', 'We share what will be done, how long it takes and what it costs, in writing.')],
-    ['heart', T('Modern ve konforlu tedavi', 'Modern, comfortable care'), T('Acele etmeden dinler, anlatır; dijital araçlarla daha konforlu bir süreç sunarız.', 'We listen and explain without rushing, and use digital tools to make the process more comfortable.')],
+    ['tooth', T('Tüm tedaviler tek klinikte', 'All treatments in one clinic'), T('Dolgu, kanal tedavisi, implant, şeffaf plak, çocuk tedavisi ve estetik uygulamalar aynı klinikte yapılır.', 'Fillings, root canals, implants, clear aligners, children’s care and cosmetic work are all done in the same clinic.')],
+    ['cube', T('Dijital teknoloji', 'Digital technology'), T('Ağız içi dijital tarayıcı ve planlama yazılımı kullanılır. Şeffaf plak ve cerrahi guide gibi tedavilerde plan bilgisayarda hazırlanır.', 'An intraoral digital scanner and planning software are used. For treatments such as clear aligners and surgical guides, the plan is prepared on the computer.')],
+    ['shield', T('Şeffaf bilgilendirme', 'Clear information'), T('Planlama, süre ve ödemeyle ilgili tüm bilgiler hekiminiz tarafından ayrıntılı olarak anlatılır. Düşünmek için istediğiniz kadar zaman alabilirsiniz.', 'Your dentist explains everything about the plan, the timeline and payment in detail. You can take as long as you like to decide.')],
+    ['heart', T('Karar sizde', 'The decision is yours'), T('Tedavi seçenekleri anlatılır. Hangisini isteyeceğinize ve ne zaman başlayacağınıza siz karar verirsiniz.', 'The options are explained. You decide which one you want and when to start.')],
   ];
   const body = `
 <section class="hero"><div class="wrap hero-in">
@@ -199,28 +206,32 @@ add(function home(l) {
     <p class="free">${ic('check')}${tr(T('Muayene ücretsiz', 'Free check-up'), l)}</p>
     <div class="btn-row"><a class="btn btn-primary btn-lg" href="${BOOK(l)}" target="_blank" rel="noopener">${ic('calendar')}${tr(T('Randevu Al', 'Book Appointment'), l)}</a><a class="btn btn-outline btn-lg" href="${CFG.mapsUrl}" target="_blank" rel="noopener">${ic('pin')}${tr(U.dir, l)}</a></div>
   </div>
-  <div class="hero-art"><div class="hero-card"><img src="/assets/icon.png" alt="" width="346" height="469"></div>
-    <span class="float f1">${ic('aligner')}${tr(lab.chipA, l)}</span><span class="float f2">${ic('crosshair')}${tr(lab.chipB, l)}</span></div>
+  <div class="hero-art"><div class="hero-card photo"><img src="/assets/img/klinik/hero-bekleme-900.jpg" alt="${esc(tr(KL.waiting.alt, l))}" width="900" height="1125" fetchpriority="high"></div></div>
 </div></section>
 <section class="trust"><div class="wrap trust-in">${trust.map(([i, a, b]) => `<div class="trust-item">${ic(i)}<div><strong>${tr(a, l)}</strong><span>${tr(b, l)}</span></div></div>`).join('')}</div></section>
 
 <section class="sec"><div class="wrap">
-  ${sectionHead(tr(T('Yaklaşımımız', 'Our approach'), l), tr(T('Neden Gebze Dental Klinik?', 'Why Gebze Dental Klinik?'), l))}
+  ${sectionHead(tr(T('Kısaca', 'At a glance'), l), tr(T('Gebze Dental Klinik hakkında', 'About Gebze Dental Klinik'), l))}
   <div class="grid g4">${pillars.map(([i, a, b]) => `<div class="card pillar reveal"><span class="ico">${ic(i)}</span><h3>${tr(a, l)}</h3><p>${tr(b, l)}</p></div>`).join('')}</div>
 </div></section>
 
 <section class="sec alt"><div class="wrap">
-  ${sectionHead(tr(T('Tedaviler', 'Treatments'), l), tr(T('İhtiyacınız olan bakımı bulun', 'Find the care you need'), l), tr(T('Dört başlıkta tüm diş tedavilerini yapıyoruz.', 'We provide all dental treatments across four areas.'), l))}
+  ${sectionHead(tr(T('Tedaviler', 'Treatments'), l), tr(T('Hangi tedaviye ihtiyacınız var?', 'Which treatment do you need?'), l), tr(T('Emin değilseniz ücretsiz muayene randevusu alabilirsiniz.', 'Not sure? You can book a free check-up.'), l))}
   <div class="grid g4">${GROUPS.map((g) => `<a class="card tcard reveal" href="${url(l, 'treatments')}#${g.id}"><span class="ico">${ic(g.icon)}</span><h3>${tr(g.name, l)}</h3><p>${tr(g.promise, l)}</p><span class="more">${tr(U.more, l)}${ic('arrow')}</span></a>`).join('')}</div>
 </div></section>
 
 <section class="sec"><div class="wrap">
-  ${sectionHead(tr(T('Teknoloji', 'Technology'), l), tr(T('Planlı, öngörülebilir ve konforlu tedavi', 'Planned, predictable, comfortable treatment'), l), tr(T('Dijital planlama ile tedaviyi başlamadan önce görür, birlikte karar veririz.', 'Digital planning lets us see and decide together before treatment begins.'), l))}
+  ${sectionHead(tr(T('Teknoloji', 'Technology'), l), tr(T('Dijital planlama kullanılan tedaviler', 'Treatments that use digital planning'), l), tr(T('Bazı tedavilerde dijital tarama ve bilgisayar planlaması kullanılır. Şeffaf plak ve cerrahi guide bunlardan yalnızca ikisi.', 'Some treatments use digital scanning and computer planning. Clear aligners and surgical guides are just two of them.'), l))}
   <div class="grid g2">
-    <article class="card feat reveal">${alignerImg(l)}<h3>${tr(T('Şeffaf plak', 'Clear aligners'), l)}</h3><p>${tr(T('Tel yok, braket yok. Dişleriniz için özel hazırlanan görünmez plaklarla adım adım düzgün bir gülüş; hedefi tedaviden önce 3D simülasyonda görürsünüz.', 'No wires, no brackets. Invisible aligners made for your teeth straighten your smile step by step, and you preview the goal in a 3D simulation first.'), l)}</p><a class="more" href="${tUrl(l, TREATMENTS.find((t) => t.slug.en === 'clear-aligners'))}">${tr(U.more, l)}${ic('arrow')}</a></article>
-    <article class="card feat reveal">${guideImg(l)}<h3>${tr(T('Cerrahi guide ile implant', 'Guided implant surgery'), l)}</h3><p>${tr(T('İmplantın yeri ve açısı bilgisayarda planlanır, kişiye özel cerrahi guide ile ağıza birebir aktarılır. Daha öngörülebilir ve kontrollü bir işlem.', 'The implant’s position and angle are planned on the computer and transferred exactly with a custom surgical guide. A more predictable, controlled procedure.'), l)}</p><a class="more" href="${tUrl(l, TREATMENTS.find((t) => t.slug.en === 'guided-implant-surgery'))}">${tr(U.more, l)}${ic('arrow')}</a></article>
+    <article class="card feat reveal">${alignerImg(l)}<h3>${tr(T('Şeffaf plak', 'Clear aligners'), l)}</h3><p>${tr(T('Tel ve braket kullanılmayan, şeffaf ve çıkarılabilir plaklarla diş tedavisi. Plaklar kişiye özel hazırlanır; dişlerin nasıl hareket edeceği tedaviden önce ekranda izlenebilir.', 'Tooth straightening with clear, removable aligners, with no wires or brackets. The aligners are made for each patient, and how the teeth will move can be watched on screen before treatment.'), l)}</p><a class="more" href="${tUrl(l, TREATMENTS.find((t) => t.slug.en === 'clear-aligners'))}">${tr(U.more, l)}${ic('arrow')}</a></article>
+    <article class="card feat reveal">${guideImg(l)}<h3>${tr(T('Cerrahi guide ile implant', 'Guided implant surgery'), l)}</h3><p>${tr(T('İmplantın yeri ve açısı önce bilgisayarda planlanır. Kişiye özel hazırlanan kılavuz (cerrahi guide) bu planı ağıza birebir aktarır.', 'The implant’s position and angle are planned on the computer first. A guide made for each patient (the surgical guide) carries that plan into the mouth exactly.'), l)}</p><a class="more" href="${tUrl(l, TREATMENTS.find((t) => t.slug.en === 'guided-implant-surgery'))}">${tr(U.more, l)}${ic('arrow')}</a></article>
   </div>
   <p class="center mt"><a class="btn btn-outline" href="${url(l, 'tech')}">${tr(T('Tüm teknolojiler', 'All technology'), l)}${ic('arrow')}</a></p>
+</div></section>
+
+<section class="sec alt"><div class="wrap">
+  ${sectionHead(tr(T('Kliniğimiz', 'Our clinic'), l), tr(T('Kliniğimize göz atın', 'Take a look inside'), l), tr(T('Gelmeden önce görmek isterseniz: bekleme alanı, muayene odaları ve röntgen odası.', 'If you would like to see it before you come: the waiting area, treatment rooms and X-ray room.'), l))}
+  <div class="clinic-grid">${[KL.waiting, KL.room, KL.xray, KL.prep].map((k) => klCard(k, l)).join('')}</div>
 </div></section>
 
 
@@ -233,9 +244,9 @@ add(function home(l) {
 <section class="sec alt"><div class="wrap split">
   <div>
     <p class="eyebrow">${tr(T('Fiyat ve ödeme', 'Pricing & payment'), l)}</p>
-    <h2>${tr(T('Muayene ücretsiz, maliyeti baştan bilirsiniz', 'Free check-up, and you know the cost upfront'), l)}</h2>
-    <p class="lead">${tr(T('Muayene ücretsizdir. Sonrasında tedavi planınızı ve fiyat bilgisini yazılı olarak sunarız. Ödeme seçenekleri için bizimle iletişime geçin.', 'The check-up is free. Afterwards we give you a written treatment plan and price. Contact us for payment options.'), l)}</p>
-    <ul class="ticks">${[T('Ücretsiz muayene', 'Free check-up'), T('Yazılı tedavi planı', 'Written treatment plan'), T('Aşama aşama bilgilendirme', 'Step-by-step updates'), T('Sürpriz masraf yok', 'No surprise costs')].map((x) => `<li>${ic('check')}${tr(x, l)}</li>`).join('')}</ul>
+    <h2>${tr(T('Muayene ücretsiz', 'The check-up is free'), l)}</h2>
+    <p class="lead">${tr(T('Muayeneden sonra tedavi planı, süre ve ödemeyle ilgili tüm bilgiler hekiminiz tarafından açık ve ayrıntılı olarak anlatılır. Ödeme seçenekleri için bize yazabilir ya da arayabilirsiniz.', 'After the check-up, your dentist explains the treatment plan, the timeline and everything about payment, clearly and in detail. You can write or call us about payment options.'), l)}</p>
+    <ul class="ticks">${[T('Ücretsiz muayene', 'Free check-up'), T('Plan ve ödeme hekiminiz tarafından anlatılır', 'Your dentist explains the plan and payment'), T('Her aşamada bilgi alabilirsiniz', 'You can ask for information at every step')].map((x) => `<li>${ic('check')}${tr(x, l)}</li>`).join('')}</ul>
     <p><a class="btn btn-primary" href="${url(l, 'patients')}">${tr(T('Yeni hastalar', 'New patients'), l)}${ic('arrow')}</a></p>
   </div>
   <div class="faq-wrap"><h3>${tr(T('Sık sorulan sorular', 'Frequently asked questions'), l)}</h3>${faqList(FAQ, l)}</div>
@@ -253,7 +264,7 @@ add(function home(l) {
     ${mapEmbed()}
   </div>
 </div></section>`;
-  return { alt: both(), title: tr(T('Diş Kliniği Gebze | Şeffaf Plak ve Cerrahi Guide ile İmplant', 'Dental Clinic in Gebze | Clear Aligners & Guided Implants'), l).split(' | ')[0] + '', desc: tr(T('Gebze Dental Klinik: modern ve dijital planlı tüm diş tedavileri, şeffaf plak, cerrahi guide destekli implant ve dijital planlama. Muayene ücretsiz. Online randevu alın.', 'Gebze Dental Klinik: modern, digitally planned dental care, clear aligners, guided implant surgery and digital planning. Free check-up. Book online.'), l), body, ld: [faqLd(FAQ, l)], path: `/${l}/`, cls: 'home' };
+  return { alt: both(), title: tr(T('Diş Kliniği Gebze | Şeffaf Plak ve Cerrahi Guide ile İmplant', 'Dental Clinic in Gebze | Clear Aligners & Guided Implants'), l).split(' | ')[0] + '', desc: tr(T('Gebze Dental Klinik: dolgudan implanta, şeffaf plaktan çocuk tedavisine tüm diş tedavileri. Dijital planlama, ücretsiz muayene. Online randevu alın.', 'Gebze Dental Klinik: every dental treatment, from fillings and implants to clear aligners and children’s care. Digital planning and a free check-up. Book online.'), l), body, ld: [faqLd(FAQ, l)], path: `/${l}/`, cls: 'home' };
 });
 
 // Treatments hub
@@ -291,28 +302,32 @@ ${ctaBand(l)}`;
 // Technology
 add((l) => {
   const tech = [
-    ['aligner', T('Şeffaf plak', 'Clear aligners'), T('Dijital planlı, görünmez plaklar.', 'Digitally planned, invisible aligners.')],
-    ['crosshair', T('Cerrahi guide', 'Surgical guide'), T('Kılavuzlu, planlı implant cerrahisi.', 'Guided, planned implant surgery.')],
-    ['cube', T('3D görüntüleme', '3D imaging'), T('Kemik ve diş yapısını üç boyutlu değerlendirme.', 'Three-dimensional assessment of bone and teeth.')],
-    ['camera', T('Dijital gülüş tasarımı', 'Digital smile design'), T('Sonucu tedaviden önce önizleme.', 'Preview the result before treatment.')],
+    ['aligner', T('Şeffaf plak', 'Clear aligners'), T('Dişleri tel olmadan düzeltir.', 'Straightens teeth without wires.')],
+    ['crosshair', T('Cerrahi guide', 'Surgical guide'), T('İmplantın yerini önceden planlayıp ağza aktaran, kişiye özel kılavuz.', 'A guide made for you that carries the planned implant position into your mouth.')],
+    ['cube', T('Dijital tarama', 'Digital scanning'), T('Ölçü kaşığı ve patı kullanmadan, ağzınızın ölçüsünü dijital tarayıcıyla alırız.', 'We take your impressions with a digital scanner, with no trays or paste.')],
   ];
   const flow = (title, steps, art, link) => `<div class="tech-block reveal"><div>${art}</div><div><h2>${title}</h2><ol class="steps">${steps.map((s) => `<li>${s}</li>`).join('')}</ol><p><a class="btn btn-outline" href="${link}">${tr(U.more, l)}${ic('arrow')}</a></p></div></div>`;
   const al = TREATMENTS.find((t) => t.slug.en === 'clear-aligners'), gd = TREATMENTS.find((t) => t.slug.en === 'guided-implant-surgery');
-  const body = `${pageHero(l, tr(U.nav.tech, l), tr(T('Dijital planlama ile daha öngörülebilir tedavi', 'More predictable treatment through digital planning'), l), tr(T('Teknolojiyi gösteriş için değil, tedaviyi daha planlı ve konforlu yapmak için kullanıyoruz.', 'We use technology not for show, but to make treatment better planned and more comfortable.'), l))}
+  const body = `${pageHero(l, tr(U.nav.tech, l), tr(T('Tedaviye başlamadan önce planı birlikte görüyoruz', 'We look at the plan together before treatment starts'), l), tr(T('Teknolojiyi gösteriş için değil, ne yapacağımızı size önceden gösterebilmek için kullanıyoruz.', 'We use technology so we can show you what we are going to do, not for show.'), l))}
 <section class="sec"><div class="wrap">
-  <div class="grid g4">${tech.map(([i, a, b]) => `<div class="card pillar reveal"><span class="ico">${ic(i)}</span><h3>${tr(a, l)}</h3><p>${tr(b, l)}</p></div>`).join('')}</div>
+  <div class="grid g3">${tech.map(([i, a, b]) => `<div class="card pillar reveal"><span class="ico">${ic(i)}</span><h3>${tr(a, l)}</h3><p>${tr(b, l)}</p></div>`).join('')}</div>
+  <p class="note center">${tr(T('Gerektiğinde 3D tomografiyi dışarıdaki bir görüntüleme merkezinden alıyoruz. Hekimlerimiz görüntüyü klinikte yazılımda inceler ve plana ekler.', 'When needed, we get a 3D tomography scan from an external imaging centre. Our dentists review it in software at the clinic and add it to the plan.'), l)}</p>
 </div></section>
 <section class="sec alt"><div class="wrap">${flow(tr(T('Şeffaf plak: tel olmadan düzgün dişler', 'Clear aligners: straighter teeth without wires'), l), al.steps[l], alignerImg(l), tUrl(l, al))}</div></section>
 <section class="sec"><div class="wrap">${flow(tr(T('Cerrahi guide: planlanan yere implant', 'Surgical guide: implants where planned'), l), gd.steps[l], guideImg(l), tUrl(l, gd))}</div></section>
+<section class="sec alt"><div class="wrap">
+  ${sectionHead(tr(T('Klinikte', 'In the clinic'), l), tr(T('Kullandığımız cihazlar', 'The equipment we use'), l))}
+  <div class="clinic-grid">${[{ ...KL.room, d: T('Dijital tarayıcıyı kullandığımız muayene odası.', 'The treatment room where we use the digital scanner.') }, { ...KL.xray, d: T('Panoramik röntgen cihazımızın bulunduğu oda.', 'The room with our panoramic X-ray unit.') }].map((k) => klCard(k, l)).join('')}</div>
+</div></section>
 ${ctaBand(l)}`;
-  return { alt: both('tech'), title: tr(T('Teknoloji: Şeffaf Plak ve Cerrahi Guide', 'Technology: Clear Aligners & Surgical Guides'), l), desc: tr(T('Şeffaf plak, cerrahi guide, 3D görüntüleme ve dijital gülüş tasarımı ile planlı diş tedavisi.', 'Planned dental treatment with clear aligners, surgical guides, 3D imaging and digital smile design.'), l), body, path: url(l, 'tech') };
+  return { alt: both('tech'), title: tr(T('Teknoloji ve Dijital Planlama', 'Technology & Digital Planning'), l), desc: tr(T('Dijital tarama, şeffaf plak ve cerrahi guide ile önceden planlanan diş tedavisi.', 'Dental treatment planned in advance with digital scanning, clear aligners and surgical guides.'), l), body, path: url(l, 'tech') };
 });
 
 // Team
 const initials = (n) => n.replace(/^Dt\.\s*/, '').split(/\s+/).map((w) => w[0]).slice(0, 2).join('');
 const person = (p, l) => `<article class="card person reveal"><div class="doc-photo ${p.photo ? '' : 'ph'}">${p.photo ? `<img class="portrait" src="${p.photo}" width="667" height="832" loading="lazy" alt="${p.name}">` : `<span class="avatar" aria-hidden="true">${initials(p.name)}</span>`}</div><h3>${p.name}</h3><p class="role">${tr(p.role, l)}</p>${p.bio ? `<p>${tr(p.bio, l)}</p>` : ''}</article>`;
 add((l) => {
-  const body = `${pageHero(l, tr(U.nav.team, l), tr(T('Doktorlarımız', 'Meet our doctors'), l), tr(T('Hekimlerimiz tedavinizin her aşamasında yanınızda.', 'Our dentists are with you at every step of your treatment.'), l))}
+  const body = `${pageHero(l, tr(U.nav.team, l), tr(T('Doktorlarımız', 'Meet our doctors'), l), tr(T('Tedavinizi yapacak hekimlerimizle tanışın.', 'Meet the dentists who will treat you.'), l))}
 <section class="sec"><div class="wrap">
   <div class="team-grid">${TEAM.doctors.map((p) => person(p, l)).join('')}</div>
 </div></section>
@@ -322,13 +337,13 @@ ${ctaBand(l)}`;
 
 // New patients
 add((l) => {
-  const first = [T('Şikâyetlerinizi ve beklentilerinizi dinleriz.', 'We listen to your concerns and expectations.'), T('Ağız muayenesi yapılır; gerekirse röntgen veya 3D görüntüleme alınır.', 'We examine your mouth, taking X-rays or 3D images if needed.'), T('Tedavi seçenekleri, süre ve maliyet size yazılı olarak anlatılır.', 'Your options, timeline and cost are explained in writing.'), T('Uygun görürseniz ilk tedavi adımını planlarız.', 'If you are happy, we plan the first step of treatment.')];
-  const bring = [T('Kimlik belgesi', 'ID document'), T('Varsa eski röntgen ve tedavi kayıtları', 'Previous X-rays and treatment records, if any'), T('Kullandığınız ilaçların ve alerjilerinizin listesi', 'A list of your medications and allergies')];
-  const body = `${pageHero(l, tr(U.nav.patients, l), tr(T('İlk ziyaretinizde ne olur?', 'What to expect at your first visit'), l), tr(T('Ücretsiz muayene ile başlayan, net ve rahat bir ilk randevu.', 'A clear, comfortable first appointment that starts with a free check-up.'), l))}
+  const first = [T('Şikâyetinizi ve beklentinizi dinleriz.', 'We listen to your concerns and what you expect.'), T('Ağzınızı muayene ederiz. Gerekirse röntgen çekeriz, 3D görüntü gerekirse dışarıdan temin ederiz.', 'We examine your mouth. If needed we take an X-ray, and if a 3D scan is required we get it from an external centre.'), T('Tedavi seçenekleri, süre ve maliyet hekiminiz tarafından ayrıntılı olarak anlatılır.', 'Your dentist explains the options, the timeline and the cost in detail.'), T('Siz karar verirseniz ilk adımı birlikte planlarız.', 'If you decide to go ahead, we plan the first step together.')];
+  const bring = [T('Kimlik belgeniz', 'Your ID'), T('Varsa eski röntgenleriniz ve tedavi kayıtlarınız', 'Any previous X-rays and treatment records'), T('Kullandığınız ilaçlar ve alerjileriniz', 'The medication you take and any allergies')];
+  const body = `${pageHero(l, tr(U.nav.patients, l), tr(T('İlk ziyaretinizde ne olur?', 'What to expect at your first visit'), l), tr(T('İlk randevunuz ücretsiz muayene ile başlar.', 'Your first appointment starts with a free check-up.'), l))}
 <section class="sec"><div class="wrap split">
   <div><h2>${tr(T('İlk 60 dakika', 'The first 60 minutes'), l)}</h2><ol class="steps">${first.map((s) => `<li>${tr(s, l)}</li>`).join('')}</ol></div>
   <div><h2>${tr(T('Yanınızda getirin', 'What to bring'), l)}</h2><ul class="ticks">${bring.map((s) => `<li>${ic('check')}${tr(s, l)}</li>`).join('')}</ul>
-  <h2 class="mt">${tr(T('Fiyat ve ödeme', 'Pricing & payment'), l)}</h2><p>${tr(T('Muayene ücretsizdir. Sonrasında tedavi planınız ve fiyat bilgisi yazılı olarak verilir. Ödeme seçenekleri için bizimle iletişime geçin.', 'The check-up is free. Afterwards you receive a written plan and price. Contact us about payment options.'), l)}</p></div>
+  <h2 class="mt">${tr(T('Fiyat ve ödeme', 'Pricing & payment'), l)}</h2><p>${tr(T('Muayene ücretsizdir. Sonrasında tedavi planı, süre ve ödemeyle ilgili tüm bilgiler hekiminiz tarafından ayrıntılı olarak anlatılır. Ödeme seçenekleri için bize yazabilir ya da arayabilirsiniz.', 'The check-up is free. Afterwards, your dentist explains the treatment plan, the timeline and everything about payment in detail. You can write or call us about payment options.'), l)}</p></div>
 </div></section>
 <section class="sec alt"><div class="wrap narrow"><h2>${tr(T('Sık sorulan sorular', 'Frequently asked questions'), l)}</h2>${faqList(FAQ, l)}</div></section>${ctaBand(l)}`;
   return { alt: both('patients'), title: tr(T('Yeni Hastalar ve SSS', 'New Patients & FAQ'), l), desc: tr(T('İlk diş hekimi randevunuzda neler olur, yanınızda neler getirmelisiniz ve sık sorulan sorular.', 'What happens at your first dental appointment, what to bring and frequently asked questions.'), l), body, ld: [faqLd(FAQ, l)], path: url(l, 'patients') };
@@ -375,10 +390,11 @@ add((l) => {
     <div class="card info"><ul class="plain"><li>${ic('pin')}<a href="${CFG.mapsUrl}" target="_blank" rel="noopener">${tr(CFG.address, l)}</a></li><li>${ic('phone')}<a href="${tel}">${CFG.phone}</a></li><li>${ic('wa')}<a href="${wa}" target="_blank" rel="noopener">WhatsApp</a></li></ul><h3>${tr(T('Çalışma saatleri', 'Opening hours'), l)}</h3>${hoursBlock(l)}</div>
     <a class="btn btn-outline btn-lg wa-big" href="${CFG.mapsUrl}" target="_blank" rel="noopener">${ic('pin')}${tr(U.dir, l)}</a>
     <div class="card info emerg">${ic('alert')}<div><h3>${tr(T('Acil durum', 'Emergency'), l)}</h3><p>${tr(T('Şiddetli ağrı, şişlik veya kırık diş için hemen arayın.', 'For severe pain, swelling or a broken tooth, call right away.'), l)}</p><a class="tel-link" href="${tel}">${CFG.phone}</a></div></div>
+    ${klCard(KL.waiting2, l)}
     ${mapEmbed()}
   </aside>
 </div></section>`;
-  return { alt: both('contact'), title: tr(T('İletişim ve Randevu', 'Contact & Appointments'), l), desc: tr(T('Gebze Dental Klinik randevu formu, telefon, WhatsApp, adres ve çalışma saatleri.', 'Gebze Dental Klinik appointment form, phone, WhatsApp, address and opening hours.'), l), body, path: url(l, 'contact') };
+  return { alt: both('contact'), title: tr(T('İletişim ve Randevu', 'Contact & Appointments'), l), desc: tr(T('Gebze Dental Klinik online randevu, telefon, WhatsApp, adres ve çalışma saatleri.', 'Gebze Dental Klinik online booking, phone, WhatsApp, address and opening hours.'), l), body, path: url(l, 'contact') };
 });
 
 // Privacy
@@ -404,7 +420,7 @@ for (const l of LANGS) {
   }
 }
 // old URLs kept alive as redirects
-for (const [from, to] of [['/tr/ekibimiz/', '/tr/doktorlarimiz/'], ['/en/our-team/', '/en/our-doctors/']]) {
+for (const [from, to] of [['/tr/ekibimiz/', '/tr/doktorlarimiz/'], ['/en/our-team/', '/en/our-doctors/'], ['/tr/tedaviler/dijital-gulus-tasarimi/', '/tr/tedaviler/'], ['/en/treatments/digital-smile-design/', '/en/treatments/']]) {
   fs.mkdirSync(path.join(OUT, from), { recursive: true });
   fs.writeFileSync(path.join(OUT, from, 'index.html'), `<!doctype html><html><head><meta charset="utf-8"><title>Redirecting</title><link rel="canonical" href="${CFG.siteUrl}${to}"><meta http-equiv="refresh" content="0;url=${to}"><meta name="robots" content="noindex"></head><body><a href="${to}">${to}</a></body></html>`);
 }
